@@ -1,4 +1,6 @@
+"use client"
 import styles from "/src/app/styles/Board.module.css"
+import { useState, useEffect } from "react"
 
 class GameBoard {
     game = [];
@@ -44,6 +46,11 @@ class GameBoard {
         this.game[38] = new Tile("tax", 150, null, 0, 0);
         this.game[39] = new Tile("t22", 400, null, 200, 0);
     }
+    rollDice() {
+        const num1 = Math.floor(Math.random() * 6 + 1);
+        const num2 = Math.floor(Math.random() * 6 + 1);
+        return [num1, num2]
+    }
 }
 
 class Tile {
@@ -67,30 +74,77 @@ class Tile {
     }
 }
 
+class Player {
+    name;
+    position;
+    constructor(name, position) {
+        this.name = name;
+        this.position = position;
+    }
+    updatePosition(num) {
+        this.position++;
+    }
+}
 
 export default function Board() {
     const tiles = new GameBoard();
+    //const player1 = new Player("Khoa", 0)
+    const firstRow = tiles.game.slice(0, 11)
+    const firstCol = tiles.game.slice(11, 20)
+    const secondRow = tiles.game.slice(20, 32)
+    const secondCol = tiles.game.slice(32, 40)
+
+    const [player1, setPlayer1] = useState(new Player("Khoa", 0))
+    const [dice, setDice] = useState([])
+    const [userOn, setUserOn] = useState(false)
+    useEffect(() => {
+        //console.log(player1.position)
+    }, [player1])
+    function handleGetDice() {
+        setDice(tiles.rollDice());
+        changePosition();
+    }
+    function changePosition() {
+        setPlayer1(player => {
+            const newPos = player.position + dice[0] + dice[1]
+            console.log(player.position)
+            return { ...player, position: newPos }
+        }
+        )
+    }
     return (
         <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th colSpan="2" className={styles.head}>Mongopoly</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Player</td>
-                        <td>Money</td>
-                        <td>Properties</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h1 className={styles.header}>Mongopoly</h1>
+            <button onClick={handleGetDice}>Roll Dice</button>
+            <div>Dice rolled: {dice.length == 0 ? "" : dice[0] + " and " + dice[1]}</div>
             <div className={styles.board}>
-                {tiles.game.map((tile) => (
-                    <div style={{ "border-style": "solid" }}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
-                ))}
+                <div className={styles.row2}>
+                    {secondRow.map((tile, index) => (
+                        <div style={{ "borderStyle": "solid" }} id={styles.thirdTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                    ))}
+                </div>
+                <div className={styles.middle}>
+                    <div className={styles.col1}>
+                        {firstCol.map((tile, index) => (
+                            <div style={{ "borderStyle": "solid" }} id={styles.secondTiles} key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                        ))}
+                    </div>
+                    <img src="https://miro.medium.com/v2/resize:fit:678/1*l2tlJsFNg2tH6QizegKkqA.png" className={styles.chae} />
+                    <div className={styles.col2}>
+                        {secondCol.map((tile, index) => (
+                            <div style={{ "borderStyle": "solid" }} id={styles.fourthTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className={styles.row1}>
+                    {firstRow.map((tile, index) => (
+                        <div style={{ "borderStyle": "solid", backgroundColor: player1.position == index ? "red" : "green" }} id={styles.firstTiles} key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                    ))}
+                </div>
+
+
+
             </div>
 
         </div>
