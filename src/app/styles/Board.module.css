@@ -2,3 +2,9 @@
     align-items: center;
     color: rgb(37, 209, 37);
 }
+.board {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(116, 216, 116);
+    border-style: solid;
+}
