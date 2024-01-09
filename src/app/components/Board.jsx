@@ -95,19 +95,28 @@ export default function Board() {
     const secondCol = tiles.game.slice(32, 40)
 
     const [player1, setPlayer1] = useState(new Player("Khoa", 0))
-    const [dice, setDice] = useState([])
+    const [dice, setDice] = useState([0,0])
     const [userOn, setUserOn] = useState(false)
-    useEffect(() => {
-        //console.log(player1.position)
-    }, [player1])
-    function handleGetDice() {
+    const handleGetDice = () => {
+        console.log("dice")
         setDice(tiles.rollDice());
-        changePosition();
+        
+
+        //changePosition();
     }
-    function changePosition() {
+    useEffect(() => {
+        console.log("player")
         setPlayer1(player => {
             const newPos = player.position + dice[0] + dice[1]
-            console.log(player.position)
+            return { ...player, position: newPos }
+        }
+        )
+        console.log(dice)
+    }, [dice])
+    const changePosition =() => {
+        setPlayer1(player => {
+            const newPos = player.position + dice
+            console.log(dice)
             return { ...player, position: newPos }
         }
         )
@@ -116,8 +125,8 @@ export default function Board() {
         <div>
             <h1 className={styles.header}>Mongopoly</h1>
             <button onClick={handleGetDice}>Roll Dice</button>
-            <div>Dice rolled: {dice.length == 0 ? "" : dice[0] + " and " + dice[1]}</div>
-            <div className={styles.board}>
+           <div>Dice rolled: {dice.length == 0 ? "" : dice[0] + " and " + dice[1]}</div>
+           <div className={styles.board}>
                 <div className={styles.row2}>
                     {secondRow.map((tile, index) => (
                         <div style={{ "borderStyle": "solid" }} id={styles.thirdTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
