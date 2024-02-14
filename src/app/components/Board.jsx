@@ -1,7 +1,7 @@
 "use client"
 import styles from "/src/app/styles/Board.module.css"
 import { useState, useEffect } from "react"
-
+import Image from "next/image"
 class GameBoard {
     game = [];
     constructor() {
@@ -77,9 +77,11 @@ class Tile {
 class Player {
     name;
     position;
+    revolution;
     constructor(name, position) {
         this.name = name;
         this.position = position;
+        this.revolution =  0;
     }
     updatePosition(num) {
         this.position++;
@@ -88,7 +90,6 @@ class Player {
 
 export default function Board() {
     const tiles = new GameBoard();
-    //const player1 = new Player("Khoa", 0)
     const firstRow = tiles.game.slice(0, 11)
     const firstCol = tiles.game.slice(11, 20)
     const secondRow = tiles.game.slice(20, 32)
@@ -96,31 +97,22 @@ export default function Board() {
 
     const [player1, setPlayer1] = useState(new Player("Khoa", 0))
     const [dice, setDice] = useState([0,0])
-    const [userOn, setUserOn] = useState(false)
     const handleGetDice = () => {
         console.log("dice")
         setDice(tiles.rollDice());
-        
-
-        //changePosition();
     }
     useEffect(() => {
-        console.log("player")
         setPlayer1(player => {
+            if (player.postion >= 40) {
+                player.position = player.position % 40
+                player.revolution++
+            }
             const newPos = player.position + dice[0] + dice[1]
             return { ...player, position: newPos }
         }
         )
-        console.log(dice)
     }, [dice])
-    const changePosition =() => {
-        setPlayer1(player => {
-            const newPos = player.position + dice
-            console.log(dice)
-            return { ...player, position: newPos }
-        }
-        )
-    }
+
     return (
         <div>
             <h1 className={styles.header}>Mongopoly</h1>
@@ -129,19 +121,19 @@ export default function Board() {
            <div className={styles.board}>
                 <div className={styles.row2}>
                     {secondRow.map((tile, index) => (
-                        <div style={{ "borderStyle": "solid" }} id={styles.thirdTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                        <div style={{ "borderStyle": "solid", backgroundColor: player1.position - 20 == index ? "red" : "green"  }} id={styles.thirdTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
                     ))}
                 </div>
                 <div className={styles.middle}>
                     <div className={styles.col1}>
                         {firstCol.map((tile, index) => (
-                            <div style={{ "borderStyle": "solid" }} id={styles.secondTiles} key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                            <div style={{ "borderStyle": "solid" , backgroundColor: player1.position - 11 == index ? "red" : "green" }} id={styles.secondTiles} key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
                         ))}
                     </div>
-                    <img src="https://miro.medium.com/v2/resize:fit:678/1*l2tlJsFNg2tH6QizegKkqA.png" className={styles.chae} />
+                    <img src="https://miro.medium.com/v2/resize:fit:678/1*l2tlJsFNg2tH6QizegKkqA.png"  alt="board_picture" />
                     <div className={styles.col2}>
                         {secondCol.map((tile, index) => (
-                            <div style={{ "borderStyle": "solid" }} id={styles.fourthTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                            <div style={{ "borderStyle": "solid", backgroundColor: player1.position - 32 == index ? "red" : "green"  }} id={styles.fourthTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
                         ))}
                     </div>
                 </div>
