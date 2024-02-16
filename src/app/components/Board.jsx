@@ -103,11 +103,12 @@ export default function Board() {
     }
     useEffect(() => {
         setPlayer1(player => {
-            if (player.postion >= 40) {
-                player.position = player.position % 40
+            let newPos = player.position + dice[0] + dice[1]
+            if (newPos >= 40) {
+                newPos = newPos % 40
                 player.revolution++
+                console.log(newPos)
             }
-            const newPos = player.position + dice[0] + dice[1]
             return { ...player, position: newPos }
         }
         )
