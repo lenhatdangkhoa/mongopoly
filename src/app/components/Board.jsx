@@ -98,27 +98,27 @@ export default function Board() {
     const [player1, setPlayer1] = useState(new Player("Khoa", 0))
     const [dice, setDice] = useState([0,0])
     const handleGetDice = () => {
-        console.log("dice")
-        setDice(tiles.rollDice());
+        const newDice = tiles.rollDice()
+        setDice(newDice);
+        
     }
     useEffect(() => {
         setPlayer1(player => {
             let newPos = player.position + dice[0] + dice[1]
             if (newPos >= 40) {
+                player.revolution += 1
                 newPos = newPos % 40
-                player.revolution++
-                console.log(newPos)
             }
             return { ...player, position: newPos }
-        }
-        )
-    }, [dice])
+        })
+    },[dice])
 
     return (
         <div>
             <h1 className={styles.header}>Mongopoly</h1>
             <button onClick={handleGetDice}>Roll Dice</button>
            <div>Dice rolled: {dice.length == 0 ? "" : dice[0] + " and " + dice[1]}</div>
+           <h3>Round: {player1.revolution}</h3>
            <div className={styles.board}>
                 <div className={styles.row2}>
                     {secondRow.map((tile, index) => (
