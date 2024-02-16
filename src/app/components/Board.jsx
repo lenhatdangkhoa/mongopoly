@@ -59,12 +59,14 @@ class Tile {
     owner;
     mortgage;
     house;
+    isOn;
     constructor(name, cost, owner, mortgage, house) {
         this.name = name;
         this.cost = cost;
         this.owner = owner;
         this.mortgage = mortgage;
         this.house = house;
+        this.isOn = false
     }
     setOwner(owner) {
         this.owner = owner;
@@ -78,10 +80,12 @@ class Player {
     name;
     position;
     revolution;
+    money;
     constructor(name, position) {
         this.name = name;
         this.position = position;
         this.revolution =  0;
+        this.money = 1500;
     }
     updatePosition(num) {
         this.position++;
@@ -95,6 +99,7 @@ export default function Board() {
     const secondRow = tiles.game.slice(20, 32)
     const secondCol = tiles.game.slice(32, 40)
 
+    const [hasOption, setHasOption] = useState(false)
     const [player1, setPlayer1] = useState(new Player("Khoa", 0))
     const [dice, setDice] = useState([0,0])
     const handleGetDice = () => {
@@ -108,6 +113,17 @@ export default function Board() {
             if (newPos >= 40) {
                 player.revolution += 1
                 newPos = newPos % 40
+                player.money += 200
+            }
+            console.log(tiles.game[newPos].owner)
+            if (tiles.game[newPos].owner == null && newPos != 0) {
+                tiles.game[newPos].setOwner(player)
+                setHasOption(true)
+                console.log(tiles.game[newPos])
+
+            } else {
+                console.log("changed")
+                setHasOption(false)
             }
             return { ...player, position: newPos }
         })
@@ -119,6 +135,8 @@ export default function Board() {
             <button onClick={handleGetDice}>Roll Dice</button>
            <div>Dice rolled: {dice.length == 0 ? "" : dice[0] + " and " + dice[1]}</div>
            <h3>Round: {player1.revolution}</h3>
+           <h3>Player 1&apos;s Cash: ${player1.money}</h3>
+           {hasOption && <button>Buy</button>}
            <div className={styles.board}>
                 <div className={styles.row2}>
                     {secondRow.map((tile, index) => (
