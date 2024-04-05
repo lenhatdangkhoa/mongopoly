@@ -1,7 +1,7 @@
 "use client"
-import styles from "/src/app/styles/Board.module.css"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+
 class GameBoard {
     game = [];
     constructor() {
@@ -130,23 +130,23 @@ export default function Board() {
     },[dice])
 
     return (
-        <div>
-            <h1 className={styles.header}>Mongopoly</h1>
+        <div className="flex">
+            <h1 className="text-center">Mongopoly</h1>
             <button onClick={handleGetDice}>Roll Dice</button>
            <div>Dice rolled: {dice.length == 0 ? "" : dice[0] + " and " + dice[1]}</div>
            <h3>Round: {player1.revolution}</h3>
            <h3>Player 1&apos;s Cash: ${player1.money}</h3>
            {hasOption && <button>Buy</button>}
-           <div className='flex'>
-                <div className={styles.row2}>
+           <div className='bg-black w-10'>
+                <div className="">
                     {secondRow.map((tile, index) => (
-                        <div style={{ "borderStyle": "solid", backgroundColor: player1.position - 20 == index ? "red" : "green"  }} id={styles.thirdTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                        <div style={{ "borderStyle": "solid", backgroundColor: player1.position - 20 == index ? "red" : "green"  }}  key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
                     ))}
                 </div>
-                <div className={styles.middle}>
-                    <div className={styles.col1}>
+                <div className="">
+                    <div className="">
                         {firstCol.map((tile, index) => (
-                            <div style={{ "borderStyle": "solid" , backgroundColor: player1.position - 11 == index ? "red" : "green" }} id={styles.secondTiles} key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                            <div style={{ "borderStyle": "solid" , backgroundColor: player1.position - 11 == index ? "red" : "green" }}  key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
                         ))}
                     </div>
                     <Image 
@@ -155,16 +155,16 @@ export default function Board() {
                         width={1000}
                         height={500}
                     /> 
-                    <div className={styles.col2}>
+                    <div className="">
                         {secondCol.map((tile, index) => (
-                            <div style={{ "borderStyle": "solid", backgroundColor: player1.position - 32 == index ? "red" : "green"  }} id={styles.fourthTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                            <div style={{ "borderStyle": "solid", backgroundColor: player1.position - 32 == index ? "red" : "green"  }} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
                         ))}
                     </div>
                 </div>
 
-                <div className={styles.row1}>
+                <div className="">
                     {firstRow.map((tile, index) => (
-                        <div style={{ "borderStyle": "solid", backgroundColor: player1.position == index ? "red" : "green" }} id={styles.firstTiles} key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
+                        <div style={{ "borderStyle": "solid", backgroundColor: player1.position == index ? "red" : "green" }}  key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
                     ))}
                 </div>
 
