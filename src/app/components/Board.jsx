@@ -137,7 +137,7 @@ export default function Board() {
            <h3>Round: {player1.revolution}</h3>
            <h3>Player 1&apos;s Cash: ${player1.money}</h3>
            {hasOption && <button>Buy</button>}
-           <div className={styles.board}>
+           <div className='flex'>
                 <div className={styles.row2}>
                     {secondRow.map((tile, index) => (
                         <div style={{ "borderStyle": "solid", backgroundColor: player1.position - 20 == index ? "red" : "green"  }} id={styles.thirdTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
@@ -149,7 +149,12 @@ export default function Board() {
                             <div style={{ "borderStyle": "solid" , backgroundColor: player1.position - 11 == index ? "red" : "green" }} id={styles.secondTiles} key={index}>{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
                         ))}
                     </div>
-                    <img src="https://miro.medium.com/v2/resize:fit:678/1*l2tlJsFNg2tH6QizegKkqA.png"  alt="board_picture" />
+                    <Image 
+                        src="https://miro.medium.com/v2/resize:fit:678/1*l2tlJsFNg2tH6QizegKkqA.png" 
+                        alt="board_picture" 
+                        width={1000}
+                        height={500}
+                    /> 
                     <div className={styles.col2}>
                         {secondCol.map((tile, index) => (
                             <div style={{ "borderStyle": "solid", backgroundColor: player1.position - 32 == index ? "red" : "green"  }} id={styles.fourthTiles} key={index} >{tile.name} {tile.cost == 0 ? "" : "$" + tile.cost}</div>
